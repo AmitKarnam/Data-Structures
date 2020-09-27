@@ -1,3 +1,6 @@
+/* An array is a collection of items stored at contiguous memory locations and elements can be accessed randomly using indices of an array. 
+  They are used to store similar type of elements as in the data type must be the same for all elements. */
+
 #include<stdio.h>
 
 void main()
