@@ -52,4 +52,4 @@ print "Given Linked List"
 llist.printList() 
 llist.reverse() 
 print "\nReversed Linked List"
-llist.printList(
+llist.printList()
