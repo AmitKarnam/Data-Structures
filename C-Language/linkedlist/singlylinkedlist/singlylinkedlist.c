@@ -42,6 +42,9 @@ void insertAtHead()
     int x;
     printf("\n Enter the element for inserting at the head: ");
     scanf("%d", &x);
+    int x;
+    printf("\n Enter the element for inserting at the head: ");
+    scanf("%d", &x);
 
     struct node *createnode = getNode(x);
     createnode->link = head;
