@@ -1,17 +1,10 @@
 /*
     c program for the insertion/deletion at the head/tail,
     insertion/deletion at the nth position,
-    showing the elements of the linked list
 
-    Functions involved:
-
-    insertAtHead()
-    insertAtTail()
-    insertAtN()
-    deleteAtN()
-    displayLinkedList()
-    deleteAtHead()
-    deleteAtTail()
+    for insertion/deletion at the nth position
+    the position starts from 1 
+    1 is the starting node
 */
 
 #include <stdio.h>
@@ -36,105 +29,168 @@ struct node *getNode(int x)
     return temp;
 }
 
-// function for insertion in the head
-void insertAtHead()
+void Insert()
 {
-    int x;
-    printf("\n Enter the element for inserting at the head: ");
-    scanf("%d", &x);
-    int x;
-    printf("\n Enter the element for inserting at the head: ");
-    scanf("%d", &x);
+    int choice;
+    fflush(stdin);
+    printf("\n--------------------------------Insertion Menu---------------------------------\n");
+    printf("-----------------------Press 1 for Insertion In The Head Node------------------\n");
+    printf("-----------------------Press 2 for Insertion In The Tail Node-------------------\n");
+    printf("-----------------------Press 3 for Insertion In The Nth  Node------------------\n");
+    printf("Enter Your Choice for insertion: ");
+    scanf("%d", &choice);
 
-    struct node *createnode = getNode(x);
-    createnode->link = head;
-    head = createnode;
-}
-
-void insertAtTail()
-{
-    int x;
-    printf("\n Enter the element for inserting at the tail: ");
+    // getting the input
+    int x, pos;
+    printf("\n Enter the value to insert at the linked list: ");
     scanf("%d", &x);
 
+    // creating a node;
     struct node *createnode = getNode(x);
 
-    // if the linked list is empty
-    if (head == NULL)
+    // traversing node
+    struct node *traverse = head;
+
+    switch (choice)
     {
-        head = createnode;
-        return;
-    }
-
-    // traversing to the end of the linked list
-    struct node *traverse;
-    while (traverse->link != NULL)
-    {
-        traverse = traverse->link;
-    }
-    traverse->link = createnode;
-}
-
-// position starts from 1 for inserting at head it is position 1
-void insertAtN()
-{
-    displayLinkedList();
-
-    int pos;
-    printf("\n Enter the position of the element to insert: ");
-    scanf("%d", &pos);
-
-    int x;
-    printf("\nEnter the element to insert at %d position: ", pos);
-    scanf("%d", &x);
-
-    struct node *createnode = getNode(x);
-
-    if (pos == 1)
-    {
+    //  INSERTION IN THE HEAD
+    case 1:
         createnode->link = head;
         head = createnode;
-        return;
-    }
+        break;
 
-    struct node *traversenode = head;
-    int i;
-    for (i = 1; i < pos - 1; i++)
-    {
-        traversenode = traversenode->link;
+    // INSERTINO AT THE LAST
+    case 2:
+        // if the linked list is empty
+        if (head == NULL)
+        {
+            head = createnode;
+            return;
+        }
+
+        // traversing to the end of the linked list
+        while (traverse->link != NULL)
+        {
+            traverse = traverse->link;
+        }
+        traverse->link = createnode;
+        break;
+
+    case 3:
+        // INSERTING AT THE NTH NODE
+
+        printf("\n Enter the position of the element to insert: ");
+        scanf("%d", &pos);
+
+        if (pos == 1)
+        {
+            createnode->link = head;
+            head = createnode;
+            displayLinkedList();
+            return;
+        }
+
+        struct node *traversenode = head;
+        int i;
+        for (i = 1; i < pos - 1; i++)
+        {
+            traversenode = traversenode->link;
+        }
+        createnode->link = traversenode->link;
+        traversenode->link = createnode;
+        break;
     }
-    createnode->link = traversenode->link;
-    traversenode->link = createnode;
+    displayLinkedList();
 }
 
-void deleteAtN()
+void Delete()
 {
-    struct node *traversenode = head;
+    int choice, position;
+    struct node *temp = head;
+    struct node *temp1;
 
+    fflush(stdin);
+    printf("\n--------------------------------Deletion Menu---------------------------------\n");
+    printf("-----------------------Press 1 for Deleting The Head Node------------------\n");
+    printf("-----------------------Press 2 for Deleting The Tail Node-------------------\n");
+    printf("-----------------------Press 3 for Deleting The Nth  Node------------------\n");
+    printf("Enter Your Choice for Deletion: ");
+    scanf("%d", &choice);
+
+    switch (choice)
+    {
+    case 1:
+        if (head == NULL)
+        {
+            printf("\n Linked List is empty please enter something first. \n");
+            return;
+        }
+
+        temp = head;
+        head = head->link;
+
+        free(temp);
+        break;
+
+    case 2:
+        if (head == NULL)
+        {
+            printf("\n Linked List is empty please enter something first. \n");
+            return;
+        }
+
+        // if the only node is head node
+        else if (head->link == NULL)
+        {
+            temp = head;
+            head = NULL;
+            printf("\n Element deleted is %d \n", temp->data);
+            free(temp);
+        }
+
+        else
+        {
+            temp = head;
+            temp1 = head->link;
+
+            while (temp1->link != NULL)
+            {
+                temp = temp1;
+                temp1 = temp1->link;
+            }
+
+            temp->link = NULL;
+            printf("\nDeleted item is: %d \n", temp1->data);
+            free(temp1);
+        }
+        break;
+
+    case 3:
+        temp = head;
+        printf("\n Enter the position for deletion of node: ");
+        scanf("%d", &position);
+
+        if (position == 1)
+        {
+            head = temp->link;
+            free(temp);
+            displayLinkedList();
+            return;
+        }
+
+        // going to the n-1th node
+        int i;
+        for (i = 1; i < position - 1; i++)
+        {
+            temp = temp->link;
+        }
+
+        temp1 = temp->link;
+        temp->link = temp1->link;
+        free(temp1); // freeing the nth node
+        break;
+    }
     displayLinkedList();
-
-    int position;
-    printf("\n Enter the position for deletion of node: ");
-    scanf("%d", &position);
-
-    if (position == 1)
-    {
-        head = traversenode->link;
-        free(traversenode);
-        return;
-    }
-
-    // going to the n-1th node
-    int i;
-    for (i = 1; i < position - 1; i++)
-    {
-        traversenode = traversenode->link;
-    }
-
-    // going to the nth node
-    struct node *traversenode1 = traversenode->link;
-    traversenode->link = traversenode1->link;
-    free(traversenode1); // freeing the nth node
 }
 
 void displayLinkedList()
@@ -155,59 +211,91 @@ void displayLinkedList()
     printf("\n");
 }
 
-void deleteAtHead()
-{
-    if (head == NULL)
-    {
-        printf("\n Linked List is empty please enter something first. \n");
-        return;
-    }
-
-    struct node *temp = head;
-    head = head->link;
-
-    free(temp);
-}
-
-void deleteAtTail()
-{
-    struct node *temp;
-    struct node *temp1;
-    if (head == NULL)
-    {
-        printf("\n Linked List is empty please enter something first. \n");
-        return;
-    }
-
-    else if (head->link == NULL)
-    {
-        temp = head;
-        head = NULL;
-        printf("\n Element deleted is %d \n", temp->data);
-        free(temp);
-    }
-
-    else
-    {
-        temp = head;
-        temp1 = head->link;
-
-        while (temp1->link != NULL)
-        {
-            temp = temp1;
-            temp1 = temp1->link;
-        }
-
-        temp->link = NULL;
-        printf("\nDeleted item is: %d \n", temp1->data);
-        free(temp1);
-    }
-}
-
 int main()
 {
-    insertAtHead();
-    insertAtHead();
-    deleteAtTail();
+    Insert();
+    Insert();
+    Insert();
+
+    Delete();
+    Delete();
+    Delete();
+
     displayLinkedList();
+    return 0;
 }
+
+/*
+Output:
+
+
+--------------------------------Insertion Menu---------------------------------
+-----------------------Press 1 for Insertion In The Head Node------------------
+-----------------------Press 2 for Insertion In The Tail Node-------------------
+-----------------------Press 3 for Insertion In The Nth  Node------------------
+Enter Your Choice for insertion: 1
+
+ Enter the value to insert at the linked list: 1
+
+ Status of Linked List:
+ Linked List elements are: 1
+
+--------------------------------Insertion Menu---------------------------------
+-----------------------Press 1 for Insertion In The Head Node------------------
+-----------------------Press 2 for Insertion In The Tail Node-------------------
+-----------------------Press 3 for Insertion In The Nth  Node------------------
+Enter Your Choice for insertion: 2
+
+ Enter the value to insert at the linked list: 3
+
+ Status of Linked List:
+ Linked List elements are: 1 3
+
+--------------------------------Insertion Menu---------------------------------
+-----------------------Press 1 for Insertion In The Head Node------------------
+-----------------------Press 2 for Insertion In The Tail Node-------------------
+-----------------------Press 3 for Insertion In The Nth  Node------------------
+Enter Your Choice for insertion: 3
+
+ Enter the value to insert at the linked list: 7
+
+ Enter the position of the element to insert: 1
+
+ Status of Linked List:
+ Linked List elements are: 7 1 3
+
+--------------------------------Deletion Menu---------------------------------
+-----------------------Press 1 for Deleting The Head Node------------------
+-----------------------Press 2 for Deleting The Tail Node-------------------
+-----------------------Press 3 for Deleting The Nth  Node------------------
+Enter Your Choice for Deletion: 1
+
+ Status of Linked List:
+ Linked List elements are: 1 3
+
+--------------------------------Deletion Menu---------------------------------
+-----------------------Press 1 for Deleting The Head Node------------------
+-----------------------Press 2 for Deleting The Tail Node-------------------
+-----------------------Press 3 for Deleting The Nth  Node------------------
+Enter Your Choice for Deletion: 2
+
+Deleted item is: 3
+
+ Status of Linked List:
+ Linked List elements are: 1
+
+--------------------------------Deletion Menu---------------------------------
+-----------------------Press 1 for Deleting The Head Node------------------
+-----------------------Press 2 for Deleting The Tail Node-------------------
+-----------------------Press 3 for Deleting The Nth  Node------------------
+Enter Your Choice for Deletion: 3
+
+ Enter the position for deletion of node: 1
+
+ Status of Linked List:
+ Linked list is empty please enter some elements first.
+
+ Status of Linked List:
+ Linked list is empty please enter some elements first.
+
+*/
